@@ -1,0 +1,37 @@
+---
+- name: install apache2 web server
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: install apache2
+      apt:
+        name: apache2
+        state: latest
+
+    - name: change the web server timezone to Africa/Lagos
+      timezone:
+        name: Africa/Lagos
+
+    - name: restart apache2
+      systemd:
+        name: apache2
+        state: restarted
+
+    - name: create an HTML file with the hostname/IP address of the server and the current timezone
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: 0644
+
+    - name: restart apache2
+      systemd:
+        name: apache2
+        state: restarted

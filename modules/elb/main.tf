@@ -45,9 +45,11 @@ resource "aws_lb_target_group" "elb-tg" {
 # register targets
 
 resource "aws_lb_target_group_attachment" "elb-tg-attachment" {
-  target_group_arn         = aws_lb_target_group.elb-tg.arn
-  target_id                = [var.instance-ids[0], var.instance-ids[1], var.instance-ids[2]]
-  port                     = 80
+  for_each = toset(var.instance_ids)
+
+  target_group_arn = aws_lb_target_group.elb-tg.arn
+  target_id        = each.value
+  port             = 80
 }
 
 ##################################################################
@@ -87,12 +89,6 @@ resource "aws_route53_record" "route53-record" {
   type                     = "A"
   ttl                      = "300"
   records                  = [aws_lb.elb.dns_name]
-
-  alias {
-    name                   = aws_lb.elb.dns_name
-    zone_id                = aws_lb.elb.zone_id
-    evaluate_target_health = true
-  }
 }
 
 ##################################################################

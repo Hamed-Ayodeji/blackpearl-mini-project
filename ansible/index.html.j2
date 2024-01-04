@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('https://source.unsplash.com/random') center/cover no-repeat; /* Online random background image */
+        }
+
+        #container {
+            display: none; /* Hide the container initially */
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: bounceIn 1s; /* Animation for bounce-in effect */
+        }
+
+        h1 {
+            color: #3498db; /* Blue text color */
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container" class="animate__animated animate__bounceIn">
+    <h1>Server Information</h1>
+    <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+    <p><strong>IP Address:</strong> <span id="ipAddress"></span></p>
+    <p><strong>Timezone:</strong> <span id="timezone"></span></p>
+</div>
+
+<script>
+    // JavaScript to show the container with a fade-in effect after the page is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        var container = document.getElementById("container");
+        container.style.display = "block";
+        container.style.opacity = "0";
+        setTimeout(function() {
+            container.style.transition = "opacity 1s";
+            container.style.opacity = "1";
+        }, 100);
+
+        // JavaScript to fetch server information asynchronously
+        fetch('/server-info')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('hostname').innerText = data.hostname;
+                document.getElementById('ipAddress').innerText = data.ipAddress;
+                document.getElementById('timezone').innerText = data.timezone;
+            });
+    });
+</script>
+
+</body>
+</html>

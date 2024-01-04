@@ -61,10 +61,6 @@ resource "aws_instance" "ec2" {
   subnet_id               = element(var.subnet_ids, count.index)
   vpc_security_group_ids  = [var.public-instance-sg-id]
 
-  provisioner "local-exec" {
-  command                 = "echo '[ec2-hosts]' > ../../ansible/host-inventory.ini && echo '${join("\n", local.host-ips)}' >> ../../ansible/host-inventory.ini"
-}
-
   tags                    = {
     Name                  = "${var.project-name}-ec2-${count.index}"
   }
@@ -78,3 +74,13 @@ locals {
 }
 
 ##############################################################
+
+# create a null resource to generate an ansible inventory file
+
+resource "null_resource" "ansible_inventory" {
+  depends_on = [aws_instance.ec2]
+
+  provisioner "local-exec" {
+    command = "echo '[ec2-hosts]' > ../../ansible/host-inventory.ini && echo '${join("\n", local.host-ips)}' >> ../../ansible/host-inventory.ini"
+  }
+}
