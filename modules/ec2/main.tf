@@ -45,7 +45,7 @@ resource "aws_key_pair" "rsa-key" {
 
 resource "local_file" "rsa-key" {
   content                 = tls_private_key.rsa-key.private_key_pem
-  filename                = "../../blackpearl-project/${var.project-name}-key.pem"
+  filename                = "${var.project-name}-key.pem"
 }
 
 ##############################################################
@@ -81,6 +81,6 @@ resource "null_resource" "ansible_inventory" {
   depends_on = [aws_instance.ec2]
 
   provisioner "local-exec" {
-    command = "echo '[ec2-hosts]' > ../../ansible/host-inventory.ini && echo '${join("\n", local.host-ips)}' >> ../../ansible/host-inventory.ini"
+    command = "echo '[ec2-hosts]' > ../ansible/host-inventory.ini && echo '${join("\n", local.host-ips)}' >> ../ansible/host-inventory.ini"
   }
 }

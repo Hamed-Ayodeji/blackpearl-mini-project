@@ -23,6 +23,28 @@
         name: apache2
         state: restarted
 
+    - name: install the latest version of php and its dependencies
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+        - php-cli
+        - php-common
+        - php-json
+        - php-opcache
+        - php-readline
+
+    - name: create a server-side script in the root directory of my apache2 web server to display information about the server
+      template:
+        src: server-info.php.j2
+        dest: /var/www/html/server-info.php
+        owner: www-data
+        group: www-data
+        mode: 0644
+
     - name: create an HTML file with the hostname/IP address of the server and the current timezone
       template:
         src: index.html.j2

@@ -58,7 +58,7 @@
         }, 100);
 
         // JavaScript to fetch server information asynchronously
-        fetch('/server-info')
+        fetch('server-info.php')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('hostname').innerText = data.hostname;

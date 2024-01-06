@@ -1,0 +1,26 @@
+<?php
+
+// Function to get server information
+function getServerInfo() {
+    $hostname = gethostname();
+    $ipAddress = $_SERVER['SERVER_ADDR'];
+    $timezone = date_default_timezone_get();
+
+    // Return server information as an associative array
+    return [
+        'hostname' => $hostname,
+        'ipAddress' => $ipAddress,
+        'timezone' => $timezone,
+    ];
+}
+
+// Set the response header to indicate JSON content
+header('Content-Type: application/json');
+
+// Get server information
+$serverInfo = getServerInfo();
+
+// Output server information as JSON
+echo json_encode($serverInfo, JSON_PRETTY_PRINT);
+
+?>

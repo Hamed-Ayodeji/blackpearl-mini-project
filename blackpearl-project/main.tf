@@ -25,5 +25,6 @@ module "elb" {
   elb-sg-id             = module.sg.elb-sg-id
   vpc-id                = module.vpc.vpc-id
   domain-name           = var.domain-name
+  subdomain-name        = var.subdomain-name
   instance_ids          = module.ec2.instance_ids
 }

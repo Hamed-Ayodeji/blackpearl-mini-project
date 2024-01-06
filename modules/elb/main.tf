@@ -17,7 +17,7 @@ resource "aws_lb" "elb" {
 
 resource "aws_lb_target_group" "elb-tg" {
   name                     = "${var.project-name}-elb-tg"
-  target_type              = "ip"
+  target_type              = "instance"
   port                     = 80
   protocol                 = "HTTP"
   vpc_id                   = var.vpc-id
@@ -45,10 +45,10 @@ resource "aws_lb_target_group" "elb-tg" {
 # register targets
 
 resource "aws_lb_target_group_attachment" "elb-tg-attachment" {
-  for_each = toset(var.instance_ids)
+  count = 3
 
   target_group_arn = aws_lb_target_group.elb-tg.arn
-  target_id        = each.value
+  target_id        = var.instance_ids[count.index]
   port             = 80
 }
 
@@ -85,10 +85,13 @@ resource "aws_route53_zone" "route53-zone" {
 
 resource "aws_route53_record" "route53-record" {
   zone_id                  = aws_route53_zone.route53-zone.zone_id
-  name                     = "terraform-test.${var.domain-name}"
+  name                     = var.subdomain-name
   type                     = "A"
-  ttl                      = "300"
-  records                  = [aws_lb.elb.dns_name]
-}
 
+  alias {
+    name                   = aws_lb.elb.dns_name
+    zone_id                = aws_lb.elb.zone_id
+    evaluate_target_health = true
+  }
+}
 ##################################################################
