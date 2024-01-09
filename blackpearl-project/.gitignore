@@ -2,7 +2,6 @@
 .terraform
 .terraform.lock.hcl
 .terraform.lock
-terraform.tfvars
 
 # ignore ssh keys
 *.pub

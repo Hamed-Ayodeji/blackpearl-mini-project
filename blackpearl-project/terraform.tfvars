@@ -1,0 +1,7 @@
+region="us-east-1"
+profile="default"
+cidr_block="10.0.0.0/24"
+project-name="blackpearl"
+instance_type="t2.micro"
+domain-name="qurtana.com.ng"
+subdomain-name="terraform-test"
