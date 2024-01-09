@@ -3,26 +3,31 @@
 ## Table of Contents
 
 - [1. Introduction](#1-introduction)
-- [2. Requirements](#2-requirements)
-- [3. Usage](#3-usage)
-- [4. Directory Structure](#4-directory-structure)
-- [5. Modules](#5-modules)
-- [6. Ansible](#6-ansible)
-- [7. blackpearl-project](#7-blackpearl-project)
-- [8. Bash script](#8-bash-script)
-- [9. Backend](#9-backend)
-- [10. Testing](#10-testing)
-- [11. Contributing](#11-contributing)
-- [12. Author](#12-author)
-- [13. Acknowledgements](#13-acknowledgements)
-- [14. Conclusion](#14-conclusion)
+- [2. Architecture](#2-architecture)
+- [3. Requirements](#3-requirements)
+- [4. Usage](#4-usage)
+- [5. Directory Structure](#5-directory-structure)
+- [6. Modules](#6-modules)
+- [7. Ansible](#7-ansible)
+- [8. blackpearl-project](#8-blackpearl-project)
+- [9. Bash script](#9-bash-script)
+- [10. Backend](#10-backend)
+- [11. Testing](#11-testing)
+- [12. Contributing](#12-contributing)
+- [13. Author](#13-author)
+- [14. Acknowledgements](#14-acknowledgements)
+- [15. Conclusion](#15-conclusion)
 
 ## 1. Introduction
 
 Blackpearl project is a mini project in the AltSchool Cloud engineering V2 program. The project uses terraform to create 3 EC2 instances and puts them behind an Elastic load balancer (Application load balancer), the project requires the terraform script after application to export the public IP addresses of the 3 EC2 instances to a file called `host-inventory` which is used by ansible to configure the EC2 instances. The ansible playbook installs and configures Apache2 web server on the EC2 instances and also creates a default `index.html` file on the web server, it also changes the timezone to Africa/Lagos on the Apache2 web server, the hostname, IP address and the timezone are displayed on the web server's default page. A `.com.ng` domain name was purchased from [Qserver](https://www.qservers.net) and the DNS records were configured to point to the Elastic load balancer. The project also uses a bash script to automate the deployment of the application.
 the project is successfully deployed when terraform-test.domain name is entered in a web browser and the web page displays the hostname, IP address and the timezone of the EC2 instances.
 
-## 2. Requirements
+## 2. Architecture
+
+![architecture](./.img/blackpearl-project.png)
+
+## 3. Requirements
 
 - Terraform installed on your local machine
 - Ansible installed on your local machine
@@ -31,7 +36,7 @@ the project is successfully deployed when terraform-test.domain name is entered 
 - Qserver account or any other domain name registrar
 - A domain name.
 
-## 3. Usage
+## 4. Usage
 
 - Clone the repository to your local machine
 
@@ -80,7 +85,7 @@ terraform plan
 
 - After the application has been deployed, enter the domain name in a web browser to view the web page.
 
-## 4. Directory Structure
+## 5. Directory Structure
 
 ```bash
 ├── ansible
@@ -118,7 +123,7 @@ terraform plan
 ├── README.md
 ```
 
-## 5. Modules
+## 6. Modules
 
 - The project uses 4 modules which are:
 
@@ -196,7 +201,7 @@ terraform plan
 
   ![name-servers](./.img/qservers%20dns.png)
 
-## 6. Ansible
+## 7. Ansible
 
 - The ansible playbook installs and configures Apache2 web server on the EC2 instances and also creates a default `index.html` file on the web server, it also changes the timezone to Africa/Lagos on the Apache2 web server, the hostname, IP address and the timezone are displayed on the web server's default page.
 
@@ -208,21 +213,21 @@ An ansible configuration file called `ansible.cfg` was created in the `ansible` 
 
 The `host-inventory` file contains the public IP addresses of the EC2 instances.
 
-## 7. blackpearl-project
+## 8. blackpearl-project
 
 - The `blackpearl-project` directory contains the terraform script for the project. The terraform script creates 3 EC2 instances and puts them behind an Elastic load balancer (Application load balancer), the project requires the terraform script after application to export the public IP addresses of the 3 EC2 instances to a file called `host-inventory` which is used by ansible to configure the EC2 instances.
 
-## 8. Bash script
+## 9. Bash script
 
 - The `apply.sh` and `destroy.sh` files are bash scripts that automate the deployment and destruction of the application.
 
 - The `apply.sh` file runs the terraform script, exports the public IP addresses of the EC2 instances to a file called `host-inventory` and runs the ansible playbook. It also changes the permission of the `blackpearl-key.pem` file to 400.
 
-## 9. Backend
+## 10. Backend
 
 - The backend.tf file contains the configuration for the terraform backend, the backend is an S3 bucket used for state locking. The backend is used to prevent concurrent modifications to the state. The advantage of using a backend is that it allows multiple users to work on the same project. The backend also allows the state to be stored remotely.
 
-## 10. Testing
+## 11. Testing
 
 - The project is successfully deployed when terraform-test.domain name is entered in a web browser and the web page displays the hostname, IP address and the timezone of the EC2 instances.
 
@@ -234,7 +239,7 @@ upon refreshing the page, the web page displays the hostname, IP address and the
 
 ![web-page](./.img/domain%20name%20test%20elb%20ec2-3.png)
 
-## 11. Contributing
+## 12. Contributing
 
 - Fork this repository to your GitHub account
 - Clone the repository to your local machine
@@ -243,11 +248,11 @@ upon refreshing the page, the web page displays the hostname, IP address and the
 - Commit and push your changes to your forked repository
 - Create a pull request from your forked repository to the master branch of this repository
 
-## 12. Author
+## 13. Author
 
 - [Hamed Ayodeji](https://github.com/Hamed-Ayodeji)
 
-## 13. Acknowledgements
+## 14. Acknowledgements
 
 - [AltSchool](thealtschool.com)
 - [Qserver](https://www.qservers.net)
@@ -255,7 +260,7 @@ upon refreshing the page, the web page displays the hostname, IP address and the
 - [Terraform](https://www.terraform.io)
 - [Ansible](https://www.ansible.com)
 
-## 14. Conclusion
+## 15. Conclusion
 
 - The project was a success, I was able to deploy the application and also automate the deployment of the application using a bash script.
 
