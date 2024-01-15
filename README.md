@@ -29,6 +29,7 @@ the project is successfully deployed when terraform-test.domain name is entered 
 
 ## 3. Requirements
 
+- A Linux machine
 - Terraform installed on your local machine
 - Ansible installed on your local machine
 - AWS CLI installed on your local machine
