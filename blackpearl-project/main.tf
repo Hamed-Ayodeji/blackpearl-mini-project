@@ -32,6 +32,6 @@ module "route53" {
   project-name          = var.project-name
   domain-name           = var.domain-name
   subdomain-name        = var.subdomain-name
-  elb-dns_name          = module.elb.elb-dns_name
+  elb-dns-name          = module.elb.elb-dns-name
   elb-zone-id           = module.elb.elb-zone-id
 }

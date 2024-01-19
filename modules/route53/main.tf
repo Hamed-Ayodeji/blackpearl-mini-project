@@ -22,7 +22,7 @@ resource "aws_route53_record" "route53-record" {
   type                     = "A"
 
   alias {
-    name                   = var.elb-dns_name
+    name                   = var.elb-dns-name
     zone_id                = var.elb-zone-id
     evaluate_target_health = true
   }

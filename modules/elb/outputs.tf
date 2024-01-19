@@ -6,10 +6,6 @@ output "elb-dns-name" {
   value = aws_lb.elb.dns_name
 }
 
-output "elb-dns_name" {
-  value = aws_lb.elb.dns_name
-}
-
 output "elb-zone-id" {
   value = aws_lb.elb.zone_id
 }
