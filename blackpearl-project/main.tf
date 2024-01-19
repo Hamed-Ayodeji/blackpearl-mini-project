@@ -24,7 +24,14 @@ module "elb" {
   subnet-ids            = [module.vpc.subnet-ids[0], module.vpc.subnet-ids[1], module.vpc.subnet-ids[2]]
   elb-sg-id             = module.sg.elb-sg-id
   vpc-id                = module.vpc.vpc-id
+  instance_ids          = module.ec2.instance_ids
+}
+
+module "route53" {
+  source                = "../modules/route53"
+  project-name          = var.project-name
   domain-name           = var.domain-name
   subdomain-name        = var.subdomain-name
-  instance_ids          = module.ec2.instance_ids
+  elb-dns_name          = module.elb.elb-dns_name
+  elb-zone-id           = module.elb.elb-zone-id
 }

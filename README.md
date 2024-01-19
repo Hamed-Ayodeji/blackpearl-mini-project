@@ -21,7 +21,7 @@
 ## 1. Introduction
 
 Blackpearl project is a mini project in the AltSchool Cloud engineering V2 program. The project uses terraform to create 3 EC2 instances and puts them behind an Elastic load balancer (Application load balancer), the project requires the terraform script after application to export the public IP addresses of the 3 EC2 instances to a file called `host-inventory` which is used by ansible to configure the EC2 instances. The ansible playbook installs and configures Apache2 web server on the EC2 instances and also creates a default `index.html` file on the web server, it also changes the timezone to Africa/Lagos on the Apache2 web server, the hostname, IP address and the timezone are displayed on the web server's default page. A `.com.ng` domain name was purchased from [Qserver](https://www.qservers.net) and the DNS records were configured to point to the Elastic load balancer. The project also uses a bash script to automate the deployment of the application.
-the project is successfully deployed when terraform-test.domain name is entered in a web browser and the web page displays the hostname, IP address and the timezone of the EC2 instances.
+the project is successfully deployed when terraform-test.domain name is entered in a web browser and the web page displays the hostname, IP address and the timezone of the EC2 instances. [Terraform](https://www.terraform.io) was used to create the infrastructure, [Ansible](https://www.ansible.com) was used to configure the EC2 instances and [AWS](https://aws.amazon.com) was used as the cloud provider.
 
 ## 2. Architecture
 
@@ -30,11 +30,11 @@ the project is successfully deployed when terraform-test.domain name is entered 
 ## 3. Requirements
 
 - A Linux machine
-- Terraform installed on your local machine
-- Ansible installed on your local machine
+- [Terraform](https://www.terraform.io) installed on your local machine
+- [Ansible](https://www.ansible.com) installed on your local machine
 - AWS CLI installed on your local machine
-- AWS account
-- Qserver account or any other domain name registrar
+- [AWS](https://aws.amazon.com) account
+- [Qserver](https://www.qservers.net) account or any other domain name registrar
 - A domain name.
 
 ## 4. Usage
@@ -113,6 +113,10 @@ terraform plan
 │   │   ├── main.tf
 │   │   ├── outputs.tf
 │   │   └── variables.tf
+│   ├── route53 
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
 │   ├── sg 
 │   │   ├── main.tf
 │   │   ├── outputs.tf
@@ -174,7 +178,7 @@ terraform plan
 
   ![ec2](./.img/ec2%203%20counts.png)
 
-  - Elastic load balancer module and Route53 module
+  - Elastic load balancer module
 
   The Elastic load balancer module creates an Application load balancer and attaches it to the security group created by the security group module.
 
@@ -190,7 +194,9 @@ terraform plan
 
   ![listener](./.img/elb%20listener.png)
 
-  The elb module creates a route53 hosted zone and a record set for the domain name.
+  - Route53 module
+
+  The Route53 module creates a hosted zone and a record set for the domain name.
 
   ![route53](./.img/route53%20hosted%20zone.png)
 
@@ -198,7 +204,7 @@ terraform plan
 
   After applying the terraform script, the public IP addresses of the EC2 instances are exported to a file called `host-inventory` which is used by ansible to configure the EC2 instances.
 
-  Also, the generated nameservers were copied and changed on the qserver dashboard.
+  Also, the generated nameservers were copied and changed on the qserver dashboard. The nameservers were changed to the generated nameservers to ensure that the domain name points to the Elastic load balancer. Note that it takes some time for the changes to take effect. Qserver takes about 24 hours to propagate the changes, however, the changes were propagated in less than 24 hours, it took about 2 hours for the changes to take effect.
 
   ![name-servers](./.img/qservers%20dns.png)
 
@@ -239,6 +245,8 @@ upon refreshing the page, the web page displays the hostname, IP address and the
 ![web-page](./.img/domain%20name%20test%20elb%20ec2-2.png)
 
 ![web-page](./.img/domain%20name%20test%20elb%20ec2-3.png)
+
+Note that the Ip addresses of the EC2 instances are not static, they change when the EC2 instances are destroyed and recreated, and the machine has been restarted a couple of times after this documentation was written, so the IP addresses of the EC2 instances might be different from the IP addresses in the images.
 
 ## 12. Contributing
 
